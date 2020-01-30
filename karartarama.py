@@ -27,37 +27,49 @@ def hasNumbers(inputString):
 
 def makeDocument(filename,outputpath, daireno, esasno, kararno, tarih, metin):
     filename1=os.path.splitext(filename)[0]
-    output_path1=output_path+"/sablon-"+filename1+".docx"
-    outputdocument=docx.Document()
+    output_path1=output_path+ "/sablon-" + filename1 + ".docx"
+    outputdocument=docx.Document( )
+
+
+    style = outputdocument.styles['Normal']
+    font = style.font
+    font.name = 'Times New Roman'
+    font.size=Pt(12)
     
-    outputdocument.add_heading("T.C. YARGITAY", 1)
-    outputdocument.add_heading(daireno+' Hukuk Dairesi', 2)
-    table= outputdocument.add_table(4, 4)
+    paragraph0=outputdocument.add_paragraph("")
+
+    run0 = paragraph0.add_run("T.C. YARGITAY  \n" + daireno + ' Hukuk Dairesi')
+    run0.bold = True
+    
+    table= outputdocument.add_table(3, 3)
   
 
     row0 = table.rows[0]
     row0.cells[0].text = 'Esas No. '
     row0.cells[1].text = esasno
+    row0.cells[2].text='İlgili Kanun/Madde:'
 
     row1=table.rows[1]
     row1.cells[0].text = 'Karar No. '
     row1.cells[1].text = kararno
 
+
     row2=table.rows[2]
     row2.cells[0].text = 'Tarihi:'
     row2.cells[1].text = tarih
 
-    row3=table.rows[3]
-    row3.cells[0].text ='Ilgili Kanun/Madde:'
-    row3.cells[1].text = ''
+    
+
+    
     style = outputdocument.styles['No Spacing']
     font = style.font
     font.name = 'Verdana'
     font.size=Pt(8)
-    paragraph = outputdocument.add_paragraph('')
-    paragraph.add_run('OZETI:').bold = True
-    outputdocument.add_page_break()
+    
+
     paragraph1 = outputdocument.add_paragraph(metin)
+    format1=paragraph1.paragraph_format
+    format1.alignment=docx.enum.text.WD_ALIGN_PARAGRAPH.LEFT
     paragraph1.style = outputdocument.styles['No Spacing']
     
     
@@ -115,14 +127,13 @@ for filename in pdfFiles:
 
     
     
-    baslangic = string1.index('"İçtihat Metni"')+15
+    baslangic = string1.index('"İçtihat Metni"')
     son=string1.index('karar verildi.')+14
 
 
     kararmetni = string1[baslangic:son]
-   
-    makeDocument(filename,output_path, hukukdairesino, esasno, kararno, karartarihi, kararmetni)
-    
+
+    makeDocument(file_path_variable,filename,output_path, hukukdairesino, esasno, kararno, karartarihi, kararmetni)
     #this code has more cool to stuff on the way
 
 
